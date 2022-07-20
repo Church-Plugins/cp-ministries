@@ -38,7 +38,7 @@ class Init {
 	 *
 	 */
 	protected function __construct() {
-		$this->enqueue = new \WPackio\Enqueue( 'cpMinistries', 'dist', $this->get_version(), 'plugin', CP_Ministries_PLUGIN_FILE );
+		$this->enqueue = new \WPackio\Enqueue( 'cpMinistries', 'dist', $this->get_version(), 'plugin', CP_MINISTRIES_PLUGIN_FILE );
 		add_action( 'plugins_loaded', [ $this, 'maybe_setup' ], - 9999 );
 		add_action( 'init', [ $this, 'maybe_init' ] );
 	}

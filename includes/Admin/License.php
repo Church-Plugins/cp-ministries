@@ -47,28 +47,28 @@ class License {
 	public function activate_license() {
 
 		// listen for our activate button to be clicked
-		if ( ! isset( $_POST['CP_Ministries_license_activate'], $_POST['CP_Ministries_nonce'] ) ) {
+		if ( ! isset( $_POST['cp_ministries_license_activate'], $_POST['cp_ministries_nonce'] ) ) {
 			return;
 		}
 
 		// run a quick security check
-		if ( ! check_admin_referer( 'CP_Ministries_nonce', 'CP_Ministries_nonce' ) ) {
+		if ( ! check_admin_referer( 'cp_ministries_nonce', 'cp_ministries_nonce' ) ) {
 			return;
 		} // get out if we didn't click the Activate button
 
 		// retrieve the license from the database
-		$license = trim( get_option( 'CP_Ministries_license_key' ) );
+		$license = trim( get_option( 'cp_ministries_license_key' ) );
 
 		// data to send in our API request
 		$api_params = array(
 			'edd_action' => 'activate_license',
 			'license'    => $license,
-			'item_name'  => urlencode( CP_Ministries_ITEM_NAME ), // the name of our product in EDD
+			'item_name'  => urlencode( CP_MINISTRIES_ITEM_NAME ), // the name of our product in EDD
 			'url'        => home_url()
 		);
 
 		// Call the custom API.
-		$response = wp_remote_post( CP_Ministries_STORE_URL, array(
+		$response = wp_remote_post( CP_MINISTRIES_STORE_URL, array(
 			'timeout'   => 15,
 			'sslverify' => false,
 			'body'      => $api_params
@@ -83,8 +83,8 @@ class License {
 		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
 		// $license_data->license will be either "valid" or "invalid"
-		update_option( 'CP_Ministries_license_status', $license_data->license );
-		delete_transient( 'CP_Ministries_license_check' );
+		update_option( 'cp_ministries_license_status', $license_data->license );
+		delete_transient( 'cp_ministries_license_check' );
 
 	}
 
@@ -96,23 +96,23 @@ class License {
 	public function deactivate_license() {
 
 		// listen for our activate button to be clicked
-		if ( ! isset( $_POST['CP_Ministries_license_deactivate'], $_POST['CP_Ministries_nonce'] ) ) {
+		if ( ! isset( $_POST['cp_ministries_license_deactivate'], $_POST['cp_ministries_nonce'] ) ) {
 			return;
 		}
 
 		// run a quick security check
-		if ( ! check_admin_referer( 'CP_Ministries_nonce', 'CP_Ministries_nonce' ) ) {
+		if ( ! check_admin_referer( 'cp_ministries_nonce', 'cp_ministries_nonce' ) ) {
 			return;
 		}
 
 		// retrieve the license from the database
-		$license = trim( get_option( 'CP_Ministries_license_key' ) );
+		$license = trim( get_option( 'cp_ministries_license_key' ) );
 
 		// data to send in our API request
 		$api_params = array(
 			'edd_action' => 'deactivate_license',
 			'license'    => $license,
-			'item_name'  => urlencode( CP_Ministries_ITEM_NAME ), // the name of our product in EDD
+			'item_name'  => urlencode( CP_MINISTRIES_ITEM_NAME ), // the name of our product in EDD
 			'url'        => home_url()
 		);
 
@@ -133,8 +133,8 @@ class License {
 
 		// $license_data->license will be either "deactivated" or "failed"
 		if ( $license_data->license == 'deactivated' ) {
-			delete_option( 'CP_Ministries_license_status' );
-			delete_transient( 'CP_Ministries_license_check' );
+			delete_option( 'cp_ministries_license_status' );
+			delete_transient( 'cp_ministries_license_check' );
 		}
 
 	}
@@ -148,23 +148,23 @@ class License {
 	public function check_license() {
 
 		// Don't fire when saving settings
-		if ( ! empty( $_POST['CP_Ministries_nonce'] ) ) {
+		if ( ! empty( $_POST['cp_ministries_nonce'] ) ) {
 			return;
 		}
 
-		$license = get_option( 'CP_Ministries_license_key' );
-		$status  = get_transient( 'CP_Ministries_license_check' );
+		$license = get_option( 'cp_ministries_license_key' );
+		$status  = get_transient( 'cp_ministries_license_check' );
 
 		if ( $status === false && $license ) {
 
 			$api_params = array(
 				'edd_action' => 'check_license',
 				'license'    => trim( $license ),
-				'item_name'  => urlencode( CP_Ministries_ITEM_NAME ),
+				'item_name'  => urlencode( CP_MINISTRIES_ITEM_NAME ),
 				'url'        => home_url()
 			);
 
-			$response = wp_remote_post( CP_Ministries_STORE_URL, array( 'timeout' => 35, 'sslverify' => false, 'body' => $api_params ) );
+			$response = wp_remote_post( CP_MINISTRIES_STORE_URL, array( 'timeout' => 35, 'sslverify' => false, 'body' => $api_params ) );
 
 			if ( is_wp_error( $response ) ) {
 				return;
@@ -174,12 +174,12 @@ class License {
 
 			$status = $license_data->license;
 
-			update_option( 'CP_Ministries_license_status', $status );
+			update_option( 'cp_ministries_license_status', $status );
 
-			set_transient( 'CP_Ministries_license_check', $license_data->license, DAY_IN_SECONDS );
+			set_transient( 'cp_ministries_license_check', $license_data->license, DAY_IN_SECONDS );
 
 			if ( $status !== 'valid' ) {
-				delete_option( 'CP_Ministries_license_status' );
+				delete_option( 'cp_ministries_license_status' );
 			}
 		}
 
@@ -193,17 +193,17 @@ class License {
 	public function plugin_updater() {
 		// load our custom updater
 		if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-			include( CP_Ministries_PLUGIN_DIR . '/includes/updater.php' );
+			include( CP_MINISTRIES_PLUGIN_DIR . '/includes/updater.php' );
 		}
 
 		// retrieve our license key from the DB
-		$license_key = trim( get_option( 'CP_Ministries_license_key' ) );
+		$license_key = trim( get_option( 'cp_ministries_license_key' ) );
 
 		// setup the updater
-		new \EDD_SL_Plugin_Updater( CP_Ministries_STORE_URL, CP_Ministries_PLUGIN_FILE, array(
-				'version'   => CP_Ministries_PLUGIN_VERSION,    // current version number
+		new \EDD_SL_Plugin_Updater( CP_MINISTRIES_STORE_URL, CP_MINISTRIES_PLUGIN_FILE, array(
+				'version'   => CP_MINISTRIES_PLUGIN_VERSION,    // current version number
 				'license'   => $license_key,     // license key (used get_option above to retrieve from DB)
-				'item_name' => urlencode( CP_Ministries_ITEM_NAME ), // the name of our product in EDD
+				'item_name' => urlencode( CP_MINISTRIES_ITEM_NAME ), // the name of our product in EDD
 				'author'    => 'Tanner Moushey'  // author of this plugin
 			)
 		);
