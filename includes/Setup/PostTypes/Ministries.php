@@ -30,7 +30,7 @@ class Ministries extends PostType {
 	}
 
 	public function add_actions() {
-		add_action( 'enter_title_here', [ $this, 'add_title' ], 10, 2 );
+		add_filter( 'enter_title_here', [ $this, 'add_title' ], 10, 2 );
 		add_filter( 'cp_location_taxonomy_types', [ $this, 'location_tax' ] );
 		parent::add_actions();
 	}
@@ -47,7 +47,7 @@ class Ministries extends PostType {
 	 * @author Tanner Moushey
 	 */
 	public function add_title( $title, $post ) {
-		if ( ! get_post_type( $post ) == $this->post_type ) {
+		if ( get_post_type( $post ) != $this->post_type ) {
 			return $title;
 		}
 		
