@@ -116,7 +116,7 @@ class Ministries extends PostType {
 		$cmb->add_field( [
 			'name' => __( 'Contact Action', 'cp-ministries' ),
 			'desc' => __( 'The email or url to use for the contact action.', 'cp-ministries' ),
-			'id'   => 'email',
+			'id'   => 'contact_action',
 			'type' => 'text',
 		] );
 
