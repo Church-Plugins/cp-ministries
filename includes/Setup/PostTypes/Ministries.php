@@ -43,7 +43,7 @@ class Ministries extends PostType {
 	 *
 	 * @return string|void
 	 * @since  1.0.0
-	 *
+	 * 
 	 * @author Tanner Moushey
 	 */
 	public function add_title( $title, $post ) {
@@ -96,6 +96,7 @@ class Ministries extends PostType {
 		$args['menu_icon']  = apply_filters( "{$this->post_type}_icon", 'dashicons-feedback' );
 		$args['has_archive'] = false;
 		$args['supports'][] = 'page-attributes';
+		$args['supports'][] = 'excerpt';
 		return $args;
 	}
 	
