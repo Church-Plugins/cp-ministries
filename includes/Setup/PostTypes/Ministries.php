@@ -97,6 +97,7 @@ class Ministries extends PostType {
 		$args['has_archive'] = false;
 		$args['supports'][] = 'page-attributes';
 		$args['supports'][] = 'excerpt';
+		$args['supports'][] = 'revisions';
 		return $args;
 	}
 	
