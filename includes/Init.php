@@ -91,9 +91,16 @@ class Init {
 		Admin\Init::get_instance();
 		$this->setup = Setup\Init::get_instance();
 	}
-	
-	protected function actions() {}
-	
+
+	/**
+	 * Actions
+	 *
+	 * @return void
+	 */
+	protected function actions() {
+		add_action( 'wp_enqueue_scripts', [ $this, 'app_enqueue' ] );
+	}
+
 	/**
 	 * Required Plugins notice
 	 *
