@@ -3,7 +3,7 @@
  * Plugin Name: Church Plugins - Ministries
  * Plugin URL: https://churchplugins.com
  * Description: Church Ministries plugin for managing ministries
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Church Plugins
  * Author URI: https://churchplugins.com
  * Text Domain: cp-ministries
