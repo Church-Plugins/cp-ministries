@@ -23,7 +23,7 @@ if( !defined( 'CP_MINISTRIES_PLUGIN_URL' ) ) {
 }
 if( !defined( 'CP_MINISTRIES_PLUGIN_VERSION' ) ) {
 	 define ( 'CP_MINISTRIES_PLUGIN_VERSION',
-	 	'1.0.0'
+	 	'1.0.2'
 	);
 }
 if( !defined( 'CP_MINISTRIES_INCLUDES' ) ) {
