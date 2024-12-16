@@ -1,0 +1,5 @@
+
+/* Hide the post navigation on the single ministry page */
+body.single.single-cp_ministries .post-navigation {
+  display: none !important;
+}
